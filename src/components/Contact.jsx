@@ -9,7 +9,7 @@ const Contact = () => (
         
         <div className="explosive-contact-info-wrapper">
           <span className="explosive-contact-item">✉️ <b>hello@savor.com</b></span>
-          <span className="explosive-contact-item">📞 <b>+1 (800) SAVOR-NOW</b></span>
+          <span className="explosive-contact-item">📞 <b>+1 (800) HOT SPICY-NOW</b></span>
         </div>
       </div>
     </div>
