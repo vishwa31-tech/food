@@ -4,8 +4,6 @@ import { ShoppingCart } from 'lucide-react';
 const Header = ({ cartCount, onCartClick }) => (
   <header className="explosive-header-wrapper">
     <div className="explosive-header-container">
-      
-      {/* BRAND: Kinetic & Bold */}
       <div className="explosive-brand group">
         <div className="explosive-logo-box">
           <div className="explosive-logo-bg" />
@@ -29,7 +27,6 @@ const Header = ({ cartCount, onCartClick }) => (
         ))}
       </nav>
 
-      {/* ACTIONS: High-Contrast Interaction */}
       <div className="explosive-actions">
         <button 
           className="explosive-cart-btn group"
