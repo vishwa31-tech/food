@@ -1549,7 +1549,7 @@
   margin: 0 auto;
   padding: 2rem;
   background: white;
-  padding-top: 160px; /* Add space for fixed header - increased from 120px */
+  padding-top: 140px; /* Space for fixed header */
 }
 
 .explosive-checkout-container h2 {
@@ -1932,6 +1932,41 @@
   text-transform: uppercase;
 }
 
+.explosive-progress-bar-container {
+  height: 16px;
+  background: #e2e8f0;
+  border: 3px solid black;
+  border-radius: 9999px;
+  overflow: hidden;
+  box-shadow: 3px 3px 0px 0px black;
+}
+
+.explosive-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50 0%, #45a049 100%);
+  transition: width 0.5s ease;
+}
+
+.explosive-step-number {
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  background: black;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  border: 3px solid white;
+  box-shadow: 2px 2px 0px 0px black;
+}
+
+.explosive-status-checkmark {
+  font-size: 1.35rem;
+  line-height: 1;
+  font-weight: 900;
+}
+
 .explosive-status-steps {
   display: flex;
   justify-content: space-around;
@@ -2044,7 +2079,7 @@
   margin-bottom: 0.75rem;
 }
 
-.explosive-close-btn {
+.explosive-continue-btn {
   padding: 1rem 2rem;
   background: linear-gradient(135deg, #ffeb3b 0%, #ffd700 100%);
   color: black;
@@ -2059,11 +2094,9 @@
   margin-top: 1rem;
 }
 
-.explosive-close-btn:hover {
+.explosive-continue-btn:hover {
   transform: translateY(-3px);
   box-shadow: 7px 7px 0px 0px black;
-}
-  transform: rotate(-1deg);
 }
 
 .explosive-cart-item {

@@ -1,23 +1,32 @@
 import React, { useState } from 'react';
-import { MapPin, Tag, TrendingUp, Check, Clock, Truck, Smartphone, Banknote } from 'lucide-react';
+import {
+  Banknote,
+  Check,
+  Clock,
+  MapPin,
+  Smartphone,
+  Tag,
+  Truck,
+  TrendingUp,
+} from 'lucide-react';
 
 const RESTAURANT_BRANCHES = [
   { id: 1, name: 'Downtown Branch', address: '123 Main St, City Center' },
   { id: 2, name: 'Riverside Plaza', address: '456 River Ave, Waterfront' },
-  { id: 3, name: 'East Market', address: '789 East Blvd, Market District' }
+  { id: 3, name: 'East Market', address: '789 East Blvd, Market District' },
 ];
 
 const ORDER_STATUSES = [
   { step: 1, label: 'Order Placed', icon: 'check' },
   { step: 2, label: 'Preparing', icon: 'clock' },
   { step: 3, label: 'Ready for Pickup', icon: 'trending' },
-  { step: 4, label: 'Out for Delivery', icon: 'truck' }
+  { step: 4, label: 'Out for Delivery', icon: 'truck' },
 ];
 
 const VOUCHERS = [
   { code: 'WELCOME10', discount: 10, description: '10% off first order' },
   { code: 'SAVE20', discount: 20, description: '$20 off orders over $100' },
-  { code: 'SUMMER15', discount: 15, description: '15% off summer menu' }
+  { code: 'SUMMER15', discount: 15, description: '15% off summer menu' },
 ];
 
 const Checkout = ({ cart = [], onClose }) => {
@@ -32,9 +41,13 @@ const Checkout = ({ cart = [], onClose }) => {
   const cartTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const discountAmount = appliedVoucher ? (cartTotal * appliedVoucher.discount) / 100 : 0;
   const finalTotal = cartTotal - discountAmount;
+  const statusProgress =
+    ORDER_STATUSES.length > 1
+      ? Math.max(0, Math.min(1, (orderStatus - 1) / (ORDER_STATUSES.length - 1)))
+      : 0;
 
   const handleApplyVoucher = () => {
-    const voucher = VOUCHERS.find(v => v.code === voucherCode.toUpperCase());
+    const voucher = VOUCHERS.find((v) => v.code === voucherCode.toUpperCase());
     if (voucher) {
       setAppliedVoucher(voucher);
       setVoucherCode('');
@@ -45,6 +58,7 @@ const Checkout = ({ cart = [], onClose }) => {
     if (selectedBranch && deliveryAddress && paymentMethod) {
       setOrderPlaced(true);
       setOrderStatus(1);
+
       // Simulate order progress
       const intervals = [2000, 4000, 6000];
       intervals.forEach((delay, index) => {
@@ -57,24 +71,24 @@ const Checkout = ({ cart = [], onClose }) => {
     return (
       <div className="explosive-checkout-container">
         <div className="explosive-order-confirmation">
-<h2>🎉 Order Placed Successfully!</h2>
-          
+          <h2>Order Placed Successfully!</h2>
+
           <div className="explosive-order-tracking">
             <h3>Order Status</h3>
-            
-            {/* Progress Bar */}
+
             <div className="explosive-progress-bar-container">
-              <div 
+              <div
                 className="explosive-progress-bar-fill"
-                style={{ width: `${(orderStatus / 4) * 100}%` }}
+                style={{
+                  width: `${(Math.min(orderStatus, ORDER_STATUSES.length) / ORDER_STATUSES.length) * 100}%`,
+                }}
               />
             </div>
-            
-            {/* Status Steps with Numbers */}
-            <div className="explosive-status-steps">
+
+            <div className="explosive-status-steps" style={{ '--progress': statusProgress }}>
               {ORDER_STATUSES.map((status) => (
-                <div 
-                  key={status.step} 
+                <div
+                  key={status.step}
                   className={`explosive-status-step ${orderStatus >= status.step ? 'active' : ''}`}
                 >
                   <div className="explosive-step-number">{status.step}</div>
@@ -95,14 +109,27 @@ const Checkout = ({ cart = [], onClose }) => {
 
           <div className="explosive-order-details">
             <h3>Order Details</h3>
-            <p><strong>Restaurant:</strong> {RESTAURANT_BRANCHES.find(b => b.id === selectedBranch)?.name}</p>
-            <p><strong>Delivery To:</strong> {deliveryAddress}</p>
-            <p><strong>Payment Method:</strong> {paymentMethod === 'upi' ? '💳 UPI' : '💵 Cash on Delivery'}</p>
-            <p><strong>Order Total:</strong> ${finalTotal.toFixed(2)}</p>
-            {appliedVoucher && <p><strong>Discount:</strong> -${discountAmount.toFixed(2)}</p>}
+            <p>
+              <strong>Restaurant:</strong>{' '}
+              {RESTAURANT_BRANCHES.find((b) => b.id === selectedBranch)?.name}
+            </p>
+            <p>
+              <strong>Delivery To:</strong> {deliveryAddress}
+            </p>
+            <p>
+              <strong>Payment Method:</strong> {paymentMethod === 'upi' ? 'UPI' : 'Cash on Delivery'}
+            </p>
+            <p>
+              <strong>Order Total:</strong> ${finalTotal.toFixed(2)}
+            </p>
+            {appliedVoucher && (
+              <p>
+                <strong>Discount:</strong> -${discountAmount.toFixed(2)}
+              </p>
+            )}
           </div>
 
-          <button className="explosive-close-btn" onClick={onClose}>
+          <button className="explosive-continue-btn" onClick={onClose}>
             Continue Shopping
           </button>
         </div>
@@ -114,11 +141,10 @@ const Checkout = ({ cart = [], onClose }) => {
     <div className="explosive-checkout-container">
       <h2>Checkout</h2>
 
-      {/* Restaurant Location Selection */}
       <div className="explosive-checkout-section">
-        <h3 className="explosive-section-title">📍 Select Restaurant</h3>
+        <h3 className="explosive-section-title">Select Restaurant</h3>
         <div className="explosive-branches-grid">
-          {RESTAURANT_BRANCHES.map(branch => (
+          {RESTAURANT_BRANCHES.map((branch) => (
             <div
               key={branch.id}
               className={`explosive-branch-card ${selectedBranch === branch.id ? 'selected' : ''}`}
@@ -133,9 +159,8 @@ const Checkout = ({ cart = [], onClose }) => {
         </div>
       </div>
 
-      {/* Delivery Address */}
       <div className="explosive-checkout-section">
-        <h3 className="explosive-section-title">🏠 Delivery Address</h3>
+        <h3 className="explosive-section-title">Delivery Address</h3>
         <input
           type="text"
           placeholder="Enter your delivery address"
@@ -145,10 +170,9 @@ const Checkout = ({ cart = [], onClose }) => {
         />
       </div>
 
-      {/* Voucher Section */}
       <div className="explosive-checkout-section">
-        <h3 className="explosive-section-title">🎟️ Apply Voucher</h3>
-        
+        <h3 className="explosive-section-title">Apply Voucher</h3>
+
         <div className="explosive-voucher-input-group">
           <input
             type="text"
@@ -157,10 +181,7 @@ const Checkout = ({ cart = [], onClose }) => {
             onChange={(e) => setVoucherCode(e.target.value)}
             className="explosive-input"
           />
-          <button 
-            className="explosive-apply-btn"
-            onClick={handleApplyVoucher}
-          >
+          <button className="explosive-apply-btn" onClick={handleApplyVoucher}>
             Apply
           </button>
         </div>
@@ -175,7 +196,7 @@ const Checkout = ({ cart = [], onClose }) => {
 
         <div className="explosive-voucher-list">
           <p className="explosive-voucher-title">Available Vouchers:</p>
-          {VOUCHERS.map(v => (
+          {VOUCHERS.map((v) => (
             <button
               key={v.code}
               className="explosive-voucher-option"
@@ -191,9 +212,8 @@ const Checkout = ({ cart = [], onClose }) => {
         </div>
       </div>
 
-      {/* Payment Method Selection */}
       <div className="explosive-checkout-section">
-        <h3 className="explosive-section-title">💳 Payment Method</h3>
+        <h3 className="explosive-section-title">Payment Method</h3>
         <div className="explosive-payment-options">
           <button
             className={`explosive-payment-option ${paymentMethod === 'upi' ? 'selected' : ''}`}
@@ -221,9 +241,8 @@ const Checkout = ({ cart = [], onClose }) => {
         </div>
       </div>
 
-      {/* Order Summary */}
       <div className="explosive-checkout-section">
-        <h3 className="explosive-section-title">📦 Order Summary</h3>
+        <h3 className="explosive-section-title">Order Summary</h3>
         <div className="explosive-summary-table">
           <div className="explosive-summary-row">
             <span>Subtotal:</span>
@@ -242,16 +261,16 @@ const Checkout = ({ cart = [], onClose }) => {
         </div>
       </div>
 
-      {/* Place Order Button */}
       <button
         className="explosive-place-order-btn"
         onClick={handlePlaceOrder}
         disabled={!selectedBranch || !deliveryAddress || !paymentMethod || cart.length === 0}
       >
-        Place Order Now 🚀
+        Place Order Now
       </button>
     </div>
   );
 };
 
 export default Checkout;
+
