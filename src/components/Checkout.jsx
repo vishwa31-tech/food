@@ -93,7 +93,7 @@ const Checkout = ({ cart = [], onClose }) => {
   const startProgressSimulation = () => {
     clearProgressTimers();
     setOrderStatus(1);
-    const intervals = [2000, 4000, 6000];
+    const intervals = [2000, 4000, 6000,];
     intervals.forEach((delay, index) => {
       const id = setTimeout(() => setOrderStatus(index + 2), delay);
       timeoutsRef.current.push(id);
